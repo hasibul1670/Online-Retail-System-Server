@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server is Running</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        font-weight: 700;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        text-align: center;
+      }
+      h1 {
+        color: red; 
+        background-color: aqua;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        animation: blink 1s linear infinite; 
+      }
+      p {
+        color: #f90000; 
+        animation: drop 1s ease forwards;
+      }
+      @keyframes drop {
+        0% {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+        }
+        30% {
+          opacity: 1;
+          color: #050201;
+        } 
+        60% {
+          color: #ff0000;
+        } 
+        100% {
+          color: #00ff2a;
+        } 
+    
+
+        
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Server is Running</h1>
+      <p>Welcome to Online-Retail-System-Server</p>
+    </div>
+  </body>
+</html>

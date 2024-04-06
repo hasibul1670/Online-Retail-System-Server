@@ -1,16 +1,17 @@
-# Ecom Api Application
+# Ecom Server Application
 
 A simple Task Management application to help you efficiently manage your important tasks.
 
-## Table of Contents
+## APi Documentation
 
+- [API Documentation](https://documenter.getpostman.com/view/27380820/2sA35MxJRB)
+
+## Table of Contents
 
 - [Technologies Used](#technologies-used)
 - [Backend Endpoints](#backend-endpoints)
 - [Live Demo](#live-demo)
 - [Contact](#contact)
-
-
 
 ## Technologies Used
 
@@ -27,34 +28,30 @@ A simple Task Management application to help you efficiently manage your importa
 
 ## Backend Endpoints
 
+### User
 
-  ### User
-- Base URL: `https://task-ayy-kori.vercel.app/api/v1`
+- Base URL: `https://ecom-server-gamma.vercel.app/api/v1/api/v1`
 
 - `GET /users`: Get all tasks.
 - `GET /users/:id`: Get a specific user by ID.
-- `POST /users/create-user`: Create a new Inventory.
-- `POST /users/verify-user`: verify-user by email.
+- `POST /users/create-user`: Create a new Product.
 - `PATCH /users/:id`: Update an user info by ID.
-- `PATCH /users/ban-user/:id`: Banned an user  by ID.
-- `PATCH /users/unban-user/:id`: UnBanned an user  by ID.
-- `POST /users/forget-password`: forget-password of an user send mail to reset password.
-- `PATCH /users/update-password`: update-password of an user password.
-- `PATCH /users/reset-password`: reset-password of an user password.
+- `PATCH /users/ban-user/:id`: Banned an user by ID.
+- `PATCH /users/unban-user/:id`: UnBanned an user by ID.
 
+  ### Product
 
-  ### Inventory
-- Base URL: `https://task-ayy-kori.vercel.app/api/v1`
+- Base URL: `https://ecom-server-gamma.vercel.app/api/v1/api/v1`
 
-- `GET /inventory`: Get all tasks.
-- `GET /inventory/:id`: Get a specific Inventory by ID. //rateLimit implemeted this end point
-- `POST /inventory/create`: Create a new Inventory.
-- `PATCH /Inventory/:id`: Update a Inventory by ID.
-- `DELETE /Inventory/:id`: Delete a Inventory by ID.
-
+- `GET /Product`: Get all tasks.
+- `GET /Product/:id`: Get a specific Product by ID.
+- `POST /Product/create`: Create a new Product.
+- `PATCH /Product/:id`: Update a Product by ID.
+- `DELETE /Product/:id`: Delete a Product by ID.
 
   ### Order
-- Base URL: `https://task-ayy-kori.vercel.app/api/v1`
+
+- Base URL: `https://ecom-server-gamma.vercel.app/api/v1/api/v1`
 
 - `GET /order`: Get all tasks.
 - `GET /order/:id`: Get a specific order by ID.
@@ -64,17 +61,17 @@ A simple Task Management application to help you efficiently manage your importa
 - `DELETE /order/:id`: Delete a order by ID.
 
   ### Auth
-- Base URL: `https://task-ayy-kori.vercel.app/api/v1`
 
-- `POST /auth/login`: To log In  .
+- Base URL: `https://ecom-server-gamma.vercel.app/api/v1/api/v1`
+
+- `POST /auth/login`: To log In .
 - `POST  /auth/logout`: To Log Out.
 
 Please refer to the backend code for more detailed information about these endpoints.
 
 ## Live Demo
 
-- Visit the [Live Website](https://task-ayy-kori.vercel.app)
-
+- Visit the [Live Website](https://ecom-server-gamma.vercel.app/api/v1)
 
 ## Contact
 

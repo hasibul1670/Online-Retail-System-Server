@@ -3,9 +3,9 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import morgan from 'morgan';
+import path from 'path';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './app/routes';
-
 
 const app: Application = express();
 
@@ -17,15 +17,15 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-
 // Application routes
 
 app.use('/api/v1', router);
 
 app.get('/', async (req, res) => {
-  res.send('Welcome to ECom Api For AyyKori Task Server ');
+  res.sendFile(path.join(__dirname, 'welcomePage.html'));
+});
+app.get('/api/v1', async (req, res) => {
+  res.sendFile(path.join(__dirname, 'welcomePage.html'));
 });
 
 //client error handler
