@@ -1,0 +1,85 @@
+import { Request, Response } from 'express';
+
+import { StatusCodes } from 'http-status-codes';
+import catchAsync from '../../../shared/catchAsync';
+import { default as sendReponse } from '../../../shared/sendResponse';
+import { IUser } from './user.interface';
+import { UserService } from './user.service';
+
+const sendUserResponse = async (res: Response, message: string, data: any) => {
+  sendReponse<IUser>(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message,
+    data,
+  });
+};
+
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.createUser(req.body);
+  sendUserResponse(res, 'User Account  is Created Successfully!', result);
+});
+
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.getSingleUser(id);
+  sendUserResponse(res, ' Single User retrieved successfully !', result);
+});
+
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getAllUser();
+  sendUserResponse(res, ' All Users retrieved successfully !', result);
+});
+
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+  const result = await UserService.updateUser(id, updatedData);
+  sendUserResponse(res, 'User updated successfully !', result);
+});
+
+
+
+const banUserById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.banUserById(id);
+  sendUserResponse(res, 'User is banned successfully !', result);
+});
+
+const unbanUserById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await UserService.unbanUserById(id);
+  sendUserResponse(res, 'User is unbanned successfully !!', result);
+});
+const updateUserPassword = catchAsync(async (req: Request, res: Response) => {
+  const user = req.body.userId;
+  const data = req.body;
+  const result = await UserService.updateUserPassword(user, data);
+  sendUserResponse(res, 'User Password is Upadted successfully !!', result);
+});
+const forgetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const result = await UserService.forgetPassword(email);
+  sendUserResponse(
+    res,
+    'Forget Password email is send successfully !!',
+    result
+  );
+});
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await UserService.resetPassword(data);
+  sendUserResponse(res, ' Password reset successfully !!', result);
+});
+
+export const UserController = {
+  createUser,
+  getAllUser,
+  unbanUserById,
+  getSingleUser,
+  banUserById,
+  forgetPassword,
+  updateUser,
+  updateUserPassword,
+  resetPassword,
+};
