@@ -66,11 +66,12 @@ A simple Task Management application to help you efficiently manage your importa
 
 - `POST /auth/login`: To log In .
 - `POST  /auth/logout`: To Log Out.
+- `POST  /auth/refresh-token`: To Refresh Token .
 
 Please refer to the backend code for more detailed information about these endpoints.
 
 ## Live Demo
-
+- [API Documentation](https://documenter.getpostman.com/view/27380820/2sA35MxJRB)
 - Visit the [Live Website](https://ecom-server-gamma.vercel.app/api/v1)
 
 ## Contact
