@@ -40,7 +40,7 @@ const OrderSchema: Schema<IOrder> = new Schema<IOrder>(
     },
     paymentStatus: {
       type: String,
-      default: 'pending',
+      default: 'paid',
     },
   },
   {

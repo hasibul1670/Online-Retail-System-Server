@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { IGenericErrorMessage } from '../../../interfaces/error';
 
 export type IUser = {
-  userId: string;
+  userId?: string;
   firstName: string;
   lastName: string;
   password: string;
@@ -24,8 +24,6 @@ export type UserModel = {
   ): Promise<boolean>;
 } & Model<IUser>;
 
-
-
 export type IGenericErrorResponse = {
   statusCode: number;
   message: string;
@@ -45,4 +43,3 @@ export type IForgetPasswordType = {
   token: string;
   newPassword: string;
 };
-

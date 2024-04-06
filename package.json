@@ -1,5 +1,5 @@
 {
-  "name": "university-management-server",
+  "name": "Online-Retail-System-Server",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
@@ -13,8 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Hasibul Islam",
+  "license": "https://hasibul-islam365.netlify.app/",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.13",
@@ -54,8 +54,6 @@
     "mongoose": "^7.2.1",
     "nodemailer": "^6.9.8",
     "uuid": "^9.0.1",
-    "winston": "^3.9.0",
-    "winston-daily-rotate-file": "^4.7.1",
     "zod": "^3.21.4"
   }
 }

@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-import mongoose from 'mongoose';
+import mongoose, { FlattenMaps } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { ApiError } from '../../../handlingError/ApiError';
 import { customDateFormat } from '../../../helpers/customDateFormat';
 import { generateNextId } from '../../../helpers/generateId';
 import { Product } from '../product/product.model';
+import { IUser } from '../user/user.interface';
 import { IOrder } from './order.interface';
 import { Order } from './order.model';
 
@@ -35,7 +36,6 @@ const createOrder = async (order: IOrder) => {
       total += subtotal;
     }
 
-   
     const date = new Date();
     const formattedDate = customDateFormat(date);
     const productRequestPayload = {
@@ -67,11 +67,21 @@ const createOrder = async (order: IOrder) => {
 };
 
 const getAllOrders = async (id: string) => {
-  const allRequest = await Order.find({}).lean();
-  const filteredNotes = allRequest.filter(
-    pr => pr.user && pr.user.toString() === id
-  );
-  return filteredNotes;
+  try {
+    const allRequest = await Order.find({}).lean().populate('user').populate({
+      path: 'orderedItems.productId',
+      model: 'Product',
+    });
+
+    const filteredOrders = allRequest.filter(
+      order => order.user && (order.user as FlattenMaps<IUser>).userId === id
+    );
+
+    return filteredOrders;
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    throw error;
+  }
 };
 
 const getSingleOrder = async (id: string) => {
@@ -86,7 +96,7 @@ const getSingleOrder = async (id: string) => {
 };
 
 const deleteOrder = async (id: string) => {
-  const result = await Order.findByIdAndDelete(id);
+  const result = await Order.findOneAndDelete({ orderId: id });
   return result;
 };
 const updateOrder = async (
