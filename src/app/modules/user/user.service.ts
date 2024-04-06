@@ -1,4 +1,4 @@
-import { generateUserId } from './../../../helpers/generateId';
+import { generateNextId } from './../../../helpers/generateId';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
@@ -42,7 +42,7 @@ const createUser = async (payload: IUser) => {
   if (!payload.password) {
     payload.password = config.default_user_pass as string;
   }
-    const id = await generateUserId();
+  const id = await generateNextId('user');
 
   const existingUser = await User.findOne({ email: payload?.email });
   if (existingUser) {
@@ -52,12 +52,10 @@ const createUser = async (payload: IUser) => {
     );
   }
 
-
-  const createdUser = await User.create({ ...payload, userId:id });
+  const createdUser = await User.create({ ...payload, userId: id });
   const { password, ...result } = createdUser.toObject();
   return result;
 };
-
 
 const banUserById = async (id: string): Promise<IUser | null> => {
   const updateData = { isBanned: true };

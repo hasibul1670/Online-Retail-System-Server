@@ -1,33 +1,52 @@
 /* eslint-disable no-unused-vars */
 
 import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 import { ApiError } from '../../../handlingError/ApiError';
 import { customDateFormat } from '../../../helpers/customDateFormat';
+import { generateNextId } from '../../../helpers/generateId';
+import { Product } from '../product/product.model';
 import { IOrder } from './order.interface';
 import { Order } from './order.model';
-import { Product } from '../product/product.model';
 
 const createOrder = async (order: IOrder) => {
   const session = await mongoose.startSession();
-  const newOrderData = null;
+
+  const id = await generateNextId('order');
+  const transactionId = 'txn' + uuidv4().replace(/-/g, '').substring(0, 9);
+
   try {
     session.startTransaction();
 
+    let total = 0;
+
     for (const item of order.orderedItems) {
       const productId = item.productId;
-      const checkQuantity = await Product.findOne({
-        _id: productId,
-        quantity: { $gte: item.quantity },
-      }).session(session);
+      const product = await Product.findOne({ _id: productId }).session(
+        session
+      );
 
-      if (!checkQuantity) {
-        throw new ApiError(404, 'Product Out Of Stock - Quantity Exceeded!');
+      if (!product) {
+        throw new ApiError(404, 'Product Not Found!');
       }
+
+      // Calculate totl for order
+      const subtotal = product.price * item.quantity;
+      total += subtotal;
     }
+
+   
     const date = new Date();
     const formattedDate = customDateFormat(date);
-    const productRequestPayload = { ...order, orderDate: formattedDate };
+    const productRequestPayload = {
+      ...order,
+      orderDate: formattedDate,
+      orderId: id,
+      transactionId: transactionId,
+      total: total,
+    };
 
+    // update produvt quantity here
     for (const item of order.orderedItems) {
       await Product.updateOne(
         { _id: item.productId },
@@ -56,10 +75,12 @@ const getAllOrders = async (id: string) => {
 };
 
 const getSingleOrder = async (id: string) => {
-  const result = await Order.findById(id).populate('user').populate({
-    path: 'orderedItems.productId',
-    model: 'Product',
-  });
+  const result = await Order.findOne({ orderId: id })
+    .populate('user')
+    .populate({
+      path: 'orderedItems.productId',
+      model: 'Product',
+    });
 
   return result;
 };
@@ -72,7 +93,7 @@ const updateOrder = async (
   id: string,
   payload: Partial<IOrder>
 ): Promise<IOrder | null> => {
-  const result = await Order.findOneAndUpdate({ _id: id }, payload, {
+  const result = await Order.findOneAndUpdate({ orderId: id }, payload, {
     new: true,
   });
   return result;

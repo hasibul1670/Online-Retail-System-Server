@@ -1,37 +1,41 @@
+/* eslint-disable no-case-declarations */
 
+import { Order } from '../app/modules/order/order.model';
 import { Product } from '../app/modules/product/product.model';
 import { User } from '../app/modules/user/user.model';
 
-export const findLastUserId = async (): Promise<string | undefined> => {
-  const lastUser = await User.findOne({}, { userId: 1, _id: 0 })
-    .sort({ createdAt: -1 })
-    .lean();
+export const generateNextId = async (modelName: string): Promise<string> => {
+  let lastId: string | undefined;
+  let prefix: string;
 
-  return lastUser?.userId ? lastUser.userId.substring(2) : undefined;
-};
-export const generateUserId = async (): Promise<string> => {
-  const currentId = await findLastUserId();
-  const parsedId = currentId ? parseInt(currentId) : 0;
-  const incrementedId = (parsedId + 1).toString().padStart(5, '0');
-  const userId = `U-${incrementedId}`;
-  return userId;
-};
+  switch (modelName) {
+    case 'user':
+      const lastUser = await User.findOne({}, { userId: 1, _id: 0 })
+        .sort({ createdAt: -1 })
+        .lean();
+      lastId = lastUser?.userId;
+      prefix = 'U-';
+      break;
+    case 'product':
+      const lastProduct = await Product.findOne({}, { productId: 1, _id: 0 })
+        .sort({ createdAt: -1 })
+        .lean();
+      lastId = lastProduct?.productId;
+      prefix = 'P-';
+      break;
+    case 'order':
+      const lastOrder = await Order.findOne({}, { orderId: 1, _id: 0 })
+        .sort({ createdAt: -1 })
+        .lean();
+      lastId = lastOrder?.orderId;
+      prefix = 'O-';
+      break;
+    default:
+      throw new Error('Invalid model name');
+  }
 
-export const findLastProductId = async (): Promise<string | undefined> => {
-  const lastProduct = await Product.findOne({}, { productId: 1, _id: 0 })
-    .sort({ createdAt: -1 })
-    .lean();
+  const parsedId = lastId ? parseInt(lastId.substring(2)) : 0;
+  const nextId = `${prefix}${(parsedId + 1).toString().padStart(5, '0')}`;
 
-  return lastProduct?.productId
-    ? lastProduct.productId.substring(2)
-    : undefined;
-};
-
-export const generateProductId = async (): Promise<string> => {
-  const currentId = await findLastProductId();
-  const parsedId = currentId ? parseInt(currentId) : 0;
-  const incrementedId = (parsedId + 1).toString().padStart(5, '0');
-  const productId = `P-${incrementedId}`;
-
-  return productId;
+  return nextId;
 };

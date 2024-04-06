@@ -5,23 +5,34 @@ const ProductSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
     ref: 'Product',
+    required: true,
   },
-  measurement: String,
-  quantity: Number,
+  quantity: { type: Number, required: true },
 });
 
 const OrderSchema: Schema<IOrder> = new Schema<IOrder>(
   {
+    orderId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     orderedItems: [ProductSchema],
-    shippingAddress: { type: String },
     total: { type: Number },
-    contactNumber: { type: String },
+    shippingCost: { type: Number, required: true },
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Users',
     },
     orderDate: {
       type: String,
+    },
+    transactionId: {
+      type: String,
+    },
+    transactionMethod: {
+      type: String,
+      default: 'Bkash',
     },
     deliveryStatus: {
       type: String,

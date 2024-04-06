@@ -1,9 +1,9 @@
-import { generateProductId } from '../../../helpers/generateId';
+import { generateNextId } from '../../../helpers/generateId';
 import { IProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProduct = async (payload: IProduct): Promise<IProduct> => {
-  const id = await generateProductId();
+  const id = await generateNextId('product');
   const result = await Product.create({ ...payload, productId: id });
   return result;
 };
@@ -19,7 +19,7 @@ const getSingleProduct = async (id: string) => {
 };
 
 const deleteProduct = async (id: string) => {
-  const result = await Product.findOneAndDelete({ id: id });
+  const result = await Product.findOneAndDelete({ productId: id });
   return result;
 };
 const updateProduct = async (
